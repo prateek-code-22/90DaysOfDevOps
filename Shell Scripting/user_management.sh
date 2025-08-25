@@ -38,6 +38,7 @@ create_user()
     sudo useradd $username
     read -s -p "Enter the password: " password
     printf "$username:$password" | sudo chpasswd
+    echo
     echo "User '$username' created successfully!"
 }
 
@@ -53,6 +54,7 @@ delete_user()
     if [ "$user_status" == "true" ];
     then
         sudo userdel $username
+        echo "User deleted successfully!"
     else
         echo "User does not exists"
         exit 1
@@ -91,7 +93,6 @@ list_users()
 {
     echo "User   UID"
     awk -F: '$3 >= 1000 {print $1, $3}' /etc/passwd
-    echo $user_list
 
 }
 

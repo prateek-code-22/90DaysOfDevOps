@@ -88,12 +88,23 @@ reset_password()
 # ---------------------------------------------------------------------------------------------
 # Part 4: List User Accounts
 
-# list all user
+# list all user with their name, uid, directory 
 list_users()
 {
-    echo "User   UID"
-    awk -F: '$3 >= 1000 {print $1, $3}' /etc/passwd
+    echo "User   UID   Directory"
+    awk -F: '$3 >= 1000 {print $1, $3, $6}' /etc/passwd
 
+}
+
+# Bonus task - change the uid of user
+change_uid()
+{
+    read -p "Enter the Username: "username
+    read -p "Enter the new UID: "uid
+
+    sudo usermod -u $uid $username
+
+    echo "UID for $username successfully changed"
 }
 
 
@@ -106,6 +117,7 @@ commands_available()
     echo "-d or --delete for deleting the user"
     echo "-r or --reset for reseting the password for known user"
     echo "-l or --list for listing all the users"
+    echo "-u or --uid to change the user id for user"
     echo "-h or --help for commands available for user management"
 }
 
@@ -131,6 +143,10 @@ main()
     elif [[ "$1" == '-l' || "$1" == "--list" ]];
     then
         list_users
+    
+    elif [[ "$1" == '-u' || "$1" == "--uid" ]];
+    then
+        change_uid
 
     elif [[ "$1" == '-h' || "$1" == "--help" ]];
     then
